@@ -1,0 +1,9 @@
+CREATE DATABASE  IF NOT EXISTS shopping DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `addr` varchar(100) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;

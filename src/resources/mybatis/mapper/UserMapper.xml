@@ -5,13 +5,13 @@
 <!-- 映射文件，存放SQL
 	namespace是映射文件的唯一标志
 -->
-<mapper namespace="HelloMapper">
+<mapper namespace="com.hualy.shopping.dao.UserDao">
 
     <!-- select查询用户表的所有数据
         id该SQL的唯一标志
     resultType要把查询到的结果封装给哪个实体对象
     -->
-    <select id="SelectAll"
+    <select id="selectAll"
             resultType="com.hualy.shopping.pojo.User">
 		select * from user
 	</select>
