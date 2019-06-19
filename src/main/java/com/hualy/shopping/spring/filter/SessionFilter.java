@@ -23,7 +23,7 @@ public class SessionFilter extends OncePerRequestFilter {
      * (non-Javadoc)
      *
      * @see
-     * org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(
+     * org.springframework.web.interceptor.OncePerRequestFilter#doFilterInternal(
      * javax.servlet.http.HttpServletRequest,
      * javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)
      */

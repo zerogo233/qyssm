@@ -22,16 +22,17 @@ public class AdminUserController {
     AdminUserDao dao;
 
 
-    @RequestMapping("/admin/user")
+    @RequestMapping("/api/admin/user")
     @ResponseBody
     private Map<String, Object> getUser() {
         AdminUser user = dao.findByUsername("admin");
         return JSONResult(0, "success", user);
     }
 
-    @RequestMapping(value = "/admin/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/login", method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> login(HttpServletRequest req, HttpServletResponse res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
         // 表单
         String username = req.getParameter("username");
         String password = req.getParameter("password");
@@ -49,7 +50,7 @@ public class AdminUserController {
         }
     }
 
-    @RequestMapping(value = "/admin/check/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/check/login", method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> checkLogin(HttpServletRequest req, HttpServletResponse res) {
         Object userIdObj = req.getSession().getAttribute("user");
