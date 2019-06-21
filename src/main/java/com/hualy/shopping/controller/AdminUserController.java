@@ -32,11 +32,11 @@ public class AdminUserController {
     @RequestMapping(value = "/api/admin/login", method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> login(HttpServletRequest req, HttpServletResponse res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
         // 表单
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         AdminUser user = dao.findByUsername(username);
+
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 req.getSession().setAttribute("user", user.getId());
