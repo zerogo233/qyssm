@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,8 +22,7 @@ public class FileUploadController {
      */
     @RequestMapping("/file/upload")
     @ResponseBody
-    public Map<String, Object> fileUpload(HttpServletRequest req) throws IOException {
-
+    public Map<String, Object> fileUpload(HttpServletRequest req, HttpServletResponse httpServletResponse) throws IOException {
 
         //用来检测程序运行时间
 

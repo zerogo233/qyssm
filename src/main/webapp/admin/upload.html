@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .loginBox {
+            width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            border: 1px solid #666;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-upload
+            class="upload-demo"
+            action="http://localhost:8080/file/upload"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            list-type="picture">
+        <el-button size="small" type="primary">点击上传</el-button>
+        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+
+    function queryParams(data, isPrefix) {
+        isPrefix = isPrefix ? isPrefix : false
+        var prefix = isPrefix ? '?' : ''
+        var _result = []
+        for (var key in data) {
+            var value = data[key]
+            // 去掉为空的参数
+            if (['', undefined, null].includes(value)) {
+                continue
+            }
+            if (value.constructor === Array) {
+                value.forEach(function (_value) {
+                    _result.push(encodeURIComponent(key) + '[]=' + encodeURIComponent(_value))
+                })
+            } else {
+                _result.push(encodeURIComponent(key) + '=' + encodeURIComponent(value))
+            }
+        }
+
+        return _result.length ? prefix + _result.join('&') : ''
+    }
+
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                visible: false,
+                form: {
+                    username: '',
+                    password: ''
+                },
+                fileName: '',
+                fileList: []
+            }
+        },
+        methods: {
+            login: function () {
+            },
+            handleRemove: function(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview: function (file) {
+                console.log(file);
+            }
+        }
+    })
+
+</script>
+</html>
