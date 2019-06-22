@@ -22,13 +22,6 @@ public class AdminUserController {
     AdminUserDao dao;
 
 
-    @RequestMapping("/api/admin/user")
-    @ResponseBody
-    private Map<String, Object> getUser() {
-        AdminUser user = dao.findByUsername("admin");
-        return JSONResult(0, "success", user);
-    }
-
     @RequestMapping(value = "/api/admin/login", method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> login(HttpServletRequest req, HttpServletResponse res) {

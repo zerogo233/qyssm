@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,8 @@ import java.util.Map;
 @Controller
 public class CategoryController {
 
-    @Autowired CategoryDao dao;
+    @Autowired
+    CategoryDao dao;
 
     @RequestMapping(value = "/api/admin/category", method = RequestMethod.POST)
     @ResponseBody
@@ -46,13 +48,10 @@ public class CategoryController {
 
     @RequestMapping(value = "/api/admin/category", method = RequestMethod.DELETE)
     @ResponseBody
-    private Map<String, Object> deleteCategory(HttpServletRequest req, HttpServletResponse res) {
+    private Map<String, Object> deleteCategory(HttpServletRequest req, HttpServletResponse res,
+                                               @RequestParam(value = "id", required = false) int id) {
         Category category = new Category();
-        String id = req.getParameter("id");
-        String name = req.getParameter("name");
-        category.setId(Integer.valueOf(id));
-        category.setName(name);
-        dao.edit(category);
+        dao.delete(id + "");
         return JSONResult(0, "", category);
     }
 
@@ -67,7 +66,7 @@ public class CategoryController {
     @ResponseBody
     private Map<String, Object> getCategoryList(HttpServletRequest req, HttpServletResponse res, String id) {
         Map<String, Object> map = new HashMap<>();
-        List<Category > categoryList = dao.findList(map);
+        List<Category> categoryList = dao.findList(map);
         return JSONResult(0, "", categoryList);
     }
 

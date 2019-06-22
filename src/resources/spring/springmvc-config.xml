@@ -36,6 +36,11 @@
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
 
+    <!-- 添加跨域访问 -->
+<!--    <mvc:cors>-->
+<!--        <mvc:mapping path="/**" allowed-origins="*" allowed-methods="*" allowed-headers="*" allow-credentials="false" max-age="3600"  />-->
+<!--    </mvc:cors>-->
+
     <!-- 后台访问拦截器 -->
     <!--  -->
     <mvc:interceptors>

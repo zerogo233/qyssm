@@ -71,6 +71,7 @@
         },
         methods: {
             login: function () {
+                var that = this
                 axios.post('/api/admin/login', queryParams(this.form), {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -78,6 +79,11 @@
                 }).then(function (res) {
                     if (res.data.code === 0) {
                         location.href = "/admin/category.html"
+                    } else {
+                        that.$notify({
+                            title: '登录失败',
+                            message: res.data.message
+                        })
                     }
                 })
             }
