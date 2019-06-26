@@ -13,7 +13,7 @@
     -->
     <select id="selectAll"
             resultType="com.hualy.shopping.pojo.User">
-		select * from user
+		select * from tb_user
 	</select>
 
 

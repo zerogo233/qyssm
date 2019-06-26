@@ -114,21 +114,21 @@
                 </el-table-column>
                 <el-table-column
                         width="200"
-                        prop="main_image"
+                        prop="mainImage"
                         label="产品主图">
                     <template slot-scope="scope">
-                        <el-image :src="scope.row.main_image" fit="cover" style="width: 100px; height: 100px">
+                        <el-image :src="'/upload/'+scope.row.mainImage" fit="cover" style="width: 100px; height: 100px"/>
                     </template>
                 </el-table-column>
                 <el-table-column
                         width="400"
-                        prop="sub_images"
+                        prop="subImages"
                         label="轮播图">
-                    <template slot-scope="scope">
+                    <template slot-scope="scope" v-if="scope.row.subImages">
                         <el-image
-                                v-for="image in scope.row.sub_images.split(',')"
+                                v-for="image in scope.row.subImages.split(',')"
                                 style="width: 100px; height: 100px"
-                                :src="image"
+                                :src="image.includes('http://')?image:'/upload/'+image"
                                 fit="cover"></el-image>
                     </template>
                 </el-table-column>
@@ -155,7 +155,7 @@
                 <span>
                     <el-form>
                         <el-form-item label="商品分类">
-                            <el-select v-model="productForm.category_id" placeholder="商品分类">
+                            <el-select v-model="productForm.categoryId" placeholder="商品分类">
                                 <el-option
                                         v-for="item in categoryList"
                                         :key="item.id"
@@ -173,7 +173,7 @@
                          <el-form-item label="商品主图">
                             <el-upload
                                     class="avatar-uploader"
-                                    action="https://localhost:8080/file/upload"
+                                    action="http://localhost:8080/file/upload"
                                     :show-file-list="false"
                                     :on-success="handleMainImageUploadSuccess">
                               <img v-if="imagePreview" :src="imagePreview" class="avatar">
@@ -196,7 +196,7 @@
                </span>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="addProductDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="addCategory(categoryForAdd)">确 定</el-button>
+                    <el-button type="primary" @click="addProduct(productForm)">确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -226,7 +226,7 @@
                          <el-form-item label="商品主图">
                             <el-upload
                                     class="avatar-uploader"
-                                    action="https://localhost:8080/file/upload"
+                                    action="http://localhost:8080/file/upload"
                                     :show-file-list="false"
                                     :on-success="handleMainImageUploadSuccessForEdit">
                               <img v-if="imagePreview" :src="imagePreview" class="avatar">
@@ -249,7 +249,7 @@
                </span>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="editProductDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="editCategory(productForEdit)">确 定</el-button>
+                    <el-button type="primary" @click="editProduct(productForEdit)">确 定</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -296,42 +296,43 @@
                 editProductDialogVisible: false,
                 productList: [{
                     id: 1,
-                    category_id: 1,
+                    categoryId: 1,
                     name: "川黛 - 《蝴蝶弦》原创设计 民国风复古少女中长款旗袍秋冬女装",
                     subtitle: "川黛 - 《蝴蝶弦》原创设计 民国风复古少女中长款旗袍秋冬女装",
-                    main_image: "http://localhost:8080/images/1.jpg",
-                    sub_images: "http://localhost:8080/images/2.jpg,http://localhost:8080/images/3.jpg,http://localhost:8080/images/4.jpg,http://localhost:8080/images/5.jpg",
+                    mainImage: "http://localhost:8080/images/1.jpg",
+                    subImages: "http://localhost:8080/images/2.jpg,http://localhost:8080/images/3.jpg,http://localhost:8080/images/4.jpg,http://localhost:8080/images/5.jpg",
                     detail: "",
                     price: 500,
                     stock: 10,
-                    status: "在售",
+                    status: 1,
                 }],
                 productForm: {
-                    category_id: 1,
+                    categoryId: 1,
                     name: '',
                     subtitle: '',
-                    main_image: '',
-                    sub_images: '',
+                    mainImage: '',
+                    subImages: '',
                     detail: '',
                     price: '',
                     stock: '',
-                    status: '在售',
+                    status: 1,
                 },
                 productForEdit: {
-                    category_id: 1,
+                    categoryId: 1,
                     name: '',
                     subtitle: '',
-                    main_image: '',
-                    sub_images: '',
+                    mainImage: '',
+                    subImages: '',
                     detail: '',
                     price: '',
                     stock: '',
-                    status: '',
+                    status: 1,
                 },
                 categoryList: []
             }
         },
         mounted: function () {
+            this.getProductList()
             this.getCategoryList()
         },
         methods: {
@@ -344,16 +345,27 @@
             getProductList: function () {
                 var that = this
                 axios.get('/api/admin/product/list').then(function (res) {
+                    console.log(res)
                     that.productList = res.data.data
+
                 })
+
             },
-            addProduct: function (name) {
+            addProduct: function (product) {
                 var that = this
-                axios.post('/api/admin/product', queryParams({
-                    name: name
-                })).then(function (res) {
+                axios.post('/api/admin/product', queryParams(product)).then(function (res) {
                     // 判断是否成功
                     //
+                    this.getProductList()
+                    that.addProductDialogVisible = false
+                })
+            },
+            editProduct: function (category) {
+                var that = this
+                axios.put('/api/admin/product', queryParams(category)).then(function () {
+                    that.getCategoryList()
+                    // 隐藏窗口
+                    that.editProductDialogVisible = false
                 })
             },
             updateProduct: function (id, name) {
@@ -375,11 +387,11 @@
             },
             handleMainImageUploadSuccess: function (res, file) {
                 this.imagePreview = URL.createObjectURL(file.raw);
-                this.productForm.main_image = res.data.data
+                this.productForm.mainImage = res.data
             },
             handleMainImageUploadSuccessForEdit: function (res, file) {
                 this.imagePreviewForEdit = URL.createObjectURL(file.raw);
-                this.productForm.main_image = res.data.data
+                this.productForm.mainImage = res.data
             },
             menuSelect: function (index) {
                 window.location = "./" + index + '.html'

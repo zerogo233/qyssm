@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hualy.shopping.dao.ProductDao">
+    <select id="find" parameterType="String" resultType="com.hualy.shopping.pojo.Product">
+		select * from tb_product where id = #{id}
+	</select>
+    <!-- 添加商品 -->
+    <insert id="add" parameterType="com.hualy.shopping.pojo.Product">
+		insert into tb_product (id,name) values(null,#{name})
+	</insert>
+    <!-- 修改商品 -->
+    <update id="edit" parameterType="com.hualy.shopping.pojo.Product">
+		update tb_product set name = #{name} where id = #{id}
+	</update>
+    <!-- 删除商品 -->
+    <delete id="delete" parameterType="String">
+		delete from tb_product where id in(${value})
+	</delete>
+
+    <select id="findList" parameterType="Map" resultType="com.hualy.shopping.pojo.Product">
+        select * from tb_product where 1 = 1
+        <if test="offset != null and pageSize != null">
+            limit #{offset},#{pageSize}
+        </if>
+    </select>
+</mapper>

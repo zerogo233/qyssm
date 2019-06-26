@@ -124,19 +124,25 @@
             return {
                 userList: [{
                     id: '1',
-                    username: '管理员',
-                    email: '123456789@qq.com',
-                    phone: '13567896543',
-                    role: '1'
+                    name: '管理员',
+                    addr: '123456789@qq.com',
+                    age: '13567896543'
                 }]
             }
         },
         mounted: function () {
+            this.getUserList()
         },
         methods: {
             menuSelect: function (index) {
                 window.location = "./" + index + '.html'
             },
+            getUserList: function () {
+                var that = this
+                axios.get('/user/list').then(function (res) {
+                    that.userList = res.data.data
+                })
+            }
         }
     })
 

@@ -101,7 +101,7 @@
             <el-form-item label="头像">
                 <el-upload
                         class="avatar-uploader"
-                        action="https://localhost:8080/file/upload"
+                        action="http://localhost:8080/file/upload"
                         :show-file-list="false"
                         :on-success="handleUploadSuccess">
                     <img v-if="imagePreview" :src="imagePreview" class="avatar">

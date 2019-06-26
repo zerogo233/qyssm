@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     UserDao userDao;
 
-    @RequestMapping("/user")
+    @RequestMapping("/user/list")
     @ResponseBody
     private Map<String, Object> getUser() {
         List<User> users = userDao.selectAll();
