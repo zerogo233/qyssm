@@ -123,4 +123,22 @@ public class Product {
     public void setSubImages(String subImages) {
         this.subImages = subImages;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", categoryId=" + categoryId +
+                ", name='" + name + '\'' +
+                ", subtitle='" + subtitle + '\'' +
+                ", detail='" + detail + '\'' +
+                ", mainImage='" + mainImage + '\'' +
+                ", subImages='" + subImages + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

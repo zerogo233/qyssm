@@ -143,9 +143,14 @@
             }
         },
         mounted: function () {
+            this.onSubmit()
         },
         methods: {
             onSubmit: function () {
+                var that = this
+                axios.get('/api/admin/adminInfo').then(function (res) {
+                    that.form = res.data.data
+                })
                 // 修改用户个人信息
             },
             getUserInfo: function () {

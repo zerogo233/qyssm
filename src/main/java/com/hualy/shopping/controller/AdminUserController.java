@@ -43,6 +43,18 @@ public class AdminUserController {
         }
     }
 
+    @RequestMapping(value = "/api/admin/adminInfo",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object> getUserInfo(HttpServletRequest req, HttpServletResponse res){
+        long adminID = (Integer)req.getSession().getAttribute("user");
+        AdminUser user = dao.findByUserId(adminID);
+        if (user != null){
+            return JSONResult(0, "success", user);
+        }else{
+            return JSONResult(1, "用户未登陆", null);
+        }
+    }
+
     @RequestMapping(value = "/api/admin/check/login", method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> checkLogin(HttpServletRequest req, HttpServletResponse res) {

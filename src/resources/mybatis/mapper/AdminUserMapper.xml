@@ -7,6 +7,10 @@
     <select id="findByUsername" parameterType="String" resultType="com.hualy.shopping.pojo.AdminUser">
 		select * from admin_user where username = #{username}
 	</select>
+    <!-- 根据用户id查找用户 -->
+    <select id="findByUserId" parameterType="String" resultType="com.hualy.shopping.pojo.AdminUser">
+        select * from admin_user where id = #{id}
+    </select>
     <!-- 添加用户 -->
     <insert id="add" parameterType="com.hualy.shopping.pojo.AdminUser">
 		insert into admin_user (id,username,password,photo,age,address) values(null,#{username},#{password},#{photo},#{age},#{address})

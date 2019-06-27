@@ -42,7 +42,7 @@
 <!--    </mvc:cors>-->
 
     <!-- 后台访问拦截器 -->
-    <!--  -->
+    <!--
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/admin/*.html"/>
@@ -51,5 +51,5 @@
             <bean class="com.hualy.shopping.interceptor.admin.LoginInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
-
+    -->
 </beans>

@@ -24,42 +24,16 @@ public class ProductController {
     @RequestMapping(value = "/api/admin/product", method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> addProduct(Product product) {
-//        Product product = new Product();
-//        String name = req.getParameter("name");
-//        String subtitle = req.getParameter("subtitle");
-//        String detail = req.getParameter("detail");
-//        String price = req.getParameter("price");
-//        String stock = req.getParameter("stock");
-//        String status = req.getParameter("status");
-//        product.setName(name);
-//        product.setName(subtitle);
-//        product.setName(detail);
-//        product.setName(price);
-//        product.setName(stock);
-//        product.setName(status);
-        System.out.println("test product :" + product.getName());
+        System.out.println("test product :" + product);
         dao.add(product);
         return JSONResult(0, "", product);
     }
 
     @RequestMapping(value = "/api/admin/product", method = RequestMethod.PUT)
     @ResponseBody
-    private Map<String, Object> editProduct(HttpServletRequest req, HttpServletResponse res) {
-        Product product = new Product();
-        //String id = req.getParameter("id");
-        String name = req.getParameter("name");
-        String subtitle = req.getParameter("subtitle");
-        String detail = req.getParameter("detail");
-        String price = req.getParameter("price");
-        String stock = req.getParameter("stock");
-        String status = req.getParameter("status");
-        //product.setId(Integer.valueOf(id));
-        product.setName(name);
-        product.setName(subtitle);
-        product.setName(detail);
-        product.setName(price);
-        product.setName(stock);
-        product.setName(status);
+    private Map<String, Object> editProduct(Product product) {
+
+        System.out.println("test prodouct for edit:"+product);
         dao.edit(product);
         return JSONResult(0, "", product);
     }

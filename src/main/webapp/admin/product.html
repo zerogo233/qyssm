@@ -155,7 +155,7 @@
                 <span>
                     <el-form>
                         <el-form-item label="商品分类">
-                            <el-select v-model="productForm.categoryId" placeholder="商品分类">
+                            <el-select v-model="productForAdd.categoryId" placeholder="商品分类">
                                 <el-option
                                         v-for="item in categoryList"
                                         :key="item.id"
@@ -165,10 +165,10 @@
                             </el-select>
                          </el-form-item>
                         <el-form-item label="商品名称">
-                            <el-input v-model="productForm.name"></el-input>
+                            <el-input v-model="productForAdd.name"></el-input>
                         </el-form-item>
                         <el-form-item label="商品副标题">
-                            <el-input v-model="productForm.subtitle"></el-input>
+                            <el-input v-model="productForAdd.subtitle"></el-input>
                         </el-form-item>
                          <el-form-item label="商品主图">
                             <el-upload
@@ -181,22 +181,22 @@
                             </el-upload>
                         </el-form-item>
                          <el-form-item label="商品描述">
-                            <el-input v-model="productForm.detail"></el-input>
+                            <el-input v-model="productForAdd.detail"></el-input>
                         </el-form-item>
                         <el-form-item label="商品价格">
-                            <el-input v-model="productForm.price"></el-input>
+                            <el-input v-model="productForAdd.price"></el-input>
                         </el-form-item>
                         <el-form-item label="商品价格">
-                            <el-input v-model="productForm.stock"></el-input>
+                            <el-input v-model="productForAdd.stock"></el-input>
                         </el-form-item>
                         <el-form-item label="商品价格">
-                            <el-input v-model="productForm.status"></el-input>
+                            <el-input v-model="productForAdd.status"></el-input>
                         </el-form-item>
                     </el-form>
                </span>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="addProductDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="addProduct(productForm)">确 定</el-button>
+                    <el-button type="primary" @click="addProduct(productForAdd)">确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -208,7 +208,7 @@
                 <span>
                     <el-form>
                         <el-form-item label="商品分类">
-                            <el-select v-model="productForEdit.category_id" placeholder="商品分类">
+                            <el-select v-model="productForEdit.categoryId" placeholder="商品分类">
                                 <el-option
                                         v-for="item in categoryList"
                                         :key="item.id"
@@ -239,11 +239,11 @@
                         <el-form-item label="商品价格">
                             <el-input v-model="productForEdit.price"></el-input>
                         </el-form-item>
-                        <el-form-item label="商品价格">
+                        <el-form-item label="库存数量">
                             <el-input v-model="productForEdit.stock"></el-input>
                         </el-form-item>
                         <el-form-item label="商品价格">
-                            <el-input v-model="productForEdit.status"></el-input>
+                            <el-input v-model="productForEdit.status">{{productForEdit.status==1?'在售':'删除'}}</el-input>
                         </el-form-item>
                     </el-form>
                </span>
@@ -328,6 +328,17 @@
                     stock: '',
                     status: 1,
                 },
+                productForAdd: {
+                    categoryId: 1,
+                    name: '',
+                    subtitle: '',
+                    mainImage: '',
+                    subImages: '',
+                    detail: '',
+                    price: '',
+                    stock: '',
+                    status: 1,
+                },
                 categoryList: []
             }
         },
@@ -356,14 +367,14 @@
                 axios.post('/api/admin/product', queryParams(product)).then(function (res) {
                     // 判断是否成功
                     //
-                    this.getProductList()
+                    that.getProductList()
                     that.addProductDialogVisible = false
                 })
             },
-            editProduct: function (category) {
+            editProduct: function (product) {
                 var that = this
-                axios.put('/api/admin/product', queryParams(category)).then(function () {
-                    that.getCategoryList()
+                axios.put('/api/admin/product', queryParams(product)).then(function () {
+                    that.getProductList()
                     // 隐藏窗口
                     that.editProductDialogVisible = false
                 })
@@ -379,15 +390,13 @@
             },
             deleteProduct: function (id) {
                 var that = this
-                axios.delete('/api/admin/product', queryParams({
-                    id: id
-                })).then(function (res) {
-                    // ..
+                axios.delete('/api/admin/product?id='+id).then(function (res) {
+                    that.getProductList()
                 })
             },
             handleMainImageUploadSuccess: function (res, file) {
                 this.imagePreview = URL.createObjectURL(file.raw);
-                this.productForm.mainImage = res.data
+                this.productForAdd.mainImage = res.data
             },
             handleMainImageUploadSuccessForEdit: function (res, file) {
                 this.imagePreviewForEdit = URL.createObjectURL(file.raw);
