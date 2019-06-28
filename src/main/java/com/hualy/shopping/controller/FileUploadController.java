@@ -44,6 +44,7 @@ public class FileUploadController {
                     String fileName = file.getOriginalFilename();
                     resultName = uuid + fileName.substring(fileName.lastIndexOf("."));
                     String path = (req.getSession().getServletContext().getRealPath("/") + "/upload/" + resultName);
+                    System.out.println("test path:"+path);
                     //上传
                     file.transferTo(new File(path));
                 }

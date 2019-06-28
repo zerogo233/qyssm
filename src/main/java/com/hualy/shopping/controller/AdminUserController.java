@@ -46,10 +46,30 @@ public class AdminUserController {
     @RequestMapping(value = "/api/admin/adminInfo",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getUserInfo(HttpServletRequest req, HttpServletResponse res){
-        long adminID = (Integer)req.getSession().getAttribute("user");
-        AdminUser user = dao.findByUserId(adminID);
-        if (user != null){
+        Object admin = req.getSession().getAttribute("user");
+        if (admin != null){
+            long adminID = (long)admin;
+            AdminUser user = dao.findByUserId(adminID);
             return JSONResult(0, "success", user);
+        }else{
+            return JSONResult(1, "用户未登陆", null);
+        }
+    }
+
+    @RequestMapping(value = "/api/admin/updateAdmin",method = RequestMethod.PUT)
+    @ResponseBody
+    private Map<String,Object> updateUserInfo(AdminUser user,HttpServletRequest req){
+        Object admin = req.getSession().getAttribute("user");
+        if (admin != null){
+            long adminID = (long)admin;
+            AdminUser adminUser = dao.findByUserId(adminID);
+            adminUser.setUsername(user.getUsername());
+            adminUser.setPassword(user.getPassword());
+            adminUser.setAddress(user.getAddress());
+            adminUser.setAge(user.getAge());
+            adminUser.setPhoto(user.getPhoto());
+            dao.edit(adminUser);
+            return JSONResult(0, "success", adminUser);
         }else{
             return JSONResult(1, "用户未登陆", null);
         }

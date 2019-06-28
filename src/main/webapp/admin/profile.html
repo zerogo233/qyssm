@@ -129,10 +129,34 @@
 
 <script>
 
+    function queryParams(data, isPrefix) {
+        isPrefix = isPrefix ? isPrefix : false
+        var prefix = isPrefix ? '?' : ''
+        var _result = []
+        for (var key in data) {
+            var value = data[key]
+            // 去掉为空的参数
+            if (['', undefined, null].includes(value)) {
+                continue
+            }
+            if (value.constructor === Array) {
+                value.forEach(function (_value) {
+                    _result.push(encodeURIComponent(key) + '[]=' + encodeURIComponent(_value))
+                })
+            } else {
+                _result.push(encodeURIComponent(key) + '=' + encodeURIComponent(value))
+            }
+        }
+
+        return _result.length ? prefix + _result.join('&') : ''
+    }
+
+
     new Vue({
         el: '#app',
         data: function () {
             return {
+                imagePreview:'',
                 form: {
                     username: 'username',
                     password: 'password',
@@ -143,27 +167,36 @@
             }
         },
         mounted: function () {
-            this.onSubmit()
+            console.log(this)
+            this.getUserInfo()
         },
         methods: {
-            onSubmit: function () {
+            getUserInfo: function () {
+                // 获取用户个人信息
                 var that = this
                 axios.get('/api/admin/adminInfo').then(function (res) {
                     that.form = res.data.data
                 })
-                // 修改用户个人信息
             },
-            getUserInfo: function () {
-                // 获取用户个人信息
+            onSubmit: function () {
+                // 修改用户个人信息
+                this.updateUser(this.form)
             },
 
+            updateUser:function(user){
+                console.log(user);
+                var that = this
+                axios.put('/api/admin/updateAdmin',queryParams(user)).then(function(res) {
+                    that.form = res.data.data
+                })
+            },
 
             menuSelect: function (index) {
                 window.location = "./" + index + '.html'
             },
             handleUploadSuccess: function (res, file) {
                 this.imagePreview = URL.createObjectURL(file.raw);
-                this.form.photo = res.data.data
+                this.form.photo = res.data
             },
         }
     })
